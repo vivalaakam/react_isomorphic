@@ -37,6 +37,7 @@ const getMarkup = (store) => {
     <html>
       <head>
         <title>Redux React Router – Server rendering Example</title>
+        <link href="/static/style.css" rel=stylesheet" />
       </head>
       <body>
         <div id="${MOUNT_ID}">${markup}</div>

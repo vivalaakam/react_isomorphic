@@ -1,6 +1,9 @@
 import webpack from 'webpack';
 import path from 'path';
 
+import ExtractTextPlugin from "extract-text-webpack-plugin"
+
+
 export default {
     entry: [
         'webpack-hot-middleware/client',
@@ -20,11 +23,15 @@ export default {
                 query: {
                     presets: ['stage-0', 'react', 'es2015']
                 }
+            }, {
+                test: /\.css?/,
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
             }
         ]
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin()
+        new webpack.NoErrorsPlugin(),
+        new ExtractTextPlugin("style.css")
     ]
 };

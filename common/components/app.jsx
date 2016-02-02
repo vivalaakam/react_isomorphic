@@ -1,7 +1,8 @@
-import React from 'react'
+import React from 'react';
 import {Link} from 'react-router';
-
 import {connect} from 'react-redux';
+
+import 'normalize-css';
 
 class App extends React.Component {
     render() {
