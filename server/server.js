@@ -6,14 +6,13 @@ import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import {ReduxRouter} from 'redux-router'
 import {reduxReactRouter, match} from 'redux-router/server';
-import qs from 'query-string';
 import serialize from 'serialize-javascript';
 import { createMemoryHistory } from 'history';
 
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
-import config from '../webpack.config.clientDev';
+import config from '../webpack.config';
 import {MOUNT_ID} from '../common/constants';
 import reducer from '../common/reducers';
 import routes from '../common/routes';
@@ -58,13 +57,10 @@ app.use(webpackHotMiddleware(compiler));
 
 app.use('/api', api);
 
-
 app.use((req, res) => {
     const store = reduxReactRouter({routes, createHistory: createMemoryHistory})(createStore)(reducer);
-    const query = qs.stringify(req.query);
-    const url = req.path + (query.length ? '?' + query : '');
 
-    store.dispatch(match(url, (error, redirectLocation, routerState) => {
+    store.dispatch(match(req.url, (error, redirectLocation, routerState) => {
         if (error) {
             console.error('Router error:', error);
             res.status(500).send(error.message);

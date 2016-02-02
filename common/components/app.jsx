@@ -3,14 +3,7 @@ import {Link} from 'react-router';
 
 import {connect} from 'react-redux';
 
-
-@connect(state => ({ routerState: state.router }))
-
-export default class App extends React.Component {
-    static propTypes = {
-        children: React.PropTypes.node
-    }
-
+class App extends React.Component {
     render() {
         const links = [
             '/todos',
@@ -31,4 +24,10 @@ export default class App extends React.Component {
             </div>
         );
     }
+}
+
+App.propTypes = {
+    children: React.PropTypes.node
 };
+
+export default connect(state => ({routerState: state.router}))(App)
