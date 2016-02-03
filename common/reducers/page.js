@@ -16,6 +16,7 @@ export default function page(state = {}, action = {}) {
                 [action.id]: {
                     id: action.id,
                     text: action.text,
+                    title: action.title,
                     isFetching: false
                 }
             });

@@ -30,7 +30,11 @@ export default {
             }, {
                 test: /\.less$/,
                 loader: ExtractTextPlugin.extract('style-loader', 'css-loader!less-loader')
+            }, {
+                test: /\.(png|svg)(\?.*$|$)/,
+                loader: "url-loader"
             }
+
         ]
     },
     lessLoader: {

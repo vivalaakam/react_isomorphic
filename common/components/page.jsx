@@ -2,6 +2,7 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import {connect} from 'react-redux';
 import * as PageActions from '../actions/page';
+import * as MainActions from '../actions/main';
 import {RECEIVE_PAGE} from '../constants/page';
 class Page extends React.Component {
     constructor(props) {
@@ -9,14 +10,18 @@ class Page extends React.Component {
     }
 
     componentDidMount() {
-        this.props.dispatch(PageActions.fetchPageIfNeed(this.props.params.id));
+        this.setPage(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.routeParams.id !== this.props.routeParams.id) {
-            const { dispatch } = nextProps;
-            dispatch(PageActions.fetchPageIfNeed(nextProps.routeParams.id));
+            this.setPage(nextProps);
         }
+    }
+
+    setPage(props) {
+        const {dispatch} = props;
+        dispatch(PageActions.fetchPageIfNeed(props.routeParams.id));
     }
 
     isFetching() {
@@ -30,9 +35,9 @@ class Page extends React.Component {
     render() {
         let page = this.props.pagesState[this.props.params.id] || {};
         let content = page.isFetching ? this.isFetching() : this.content(page.text);
+
         return (
             <div>
-                <h1>Page #{this.props.params.id}</h1>
                 {content}
             </div>
         )
@@ -48,12 +53,15 @@ Page.needData = [
     {name: 'getPage', type: RECEIVE_PAGE}
 ];
 
+Page.title = 'Page';
+
 const state = (st) => ({
-    pagesState: st.page
+    pagesState: st.page,
+    mainState: st.main
 });
 
 const actions = (dispatch) => ({
-    actions: bindActionCreators(PageActions, dispatch),
+    actions: bindActionCreators({...PageActions, ...MainActions}, dispatch),
     dispatch: dispatch
 });
 

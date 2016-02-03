@@ -2,6 +2,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux'
 import {connect} from 'react-redux';
 import * as TodoActions from '../actions/todo';
+import * as MainActions from '../actions/main';
 import {RECEIVE_TODOS} from '../constants/todo';
 
 import Header from './header.jsx'
@@ -12,17 +13,19 @@ if (process.env.BROWSER) {
 }
 
 class Todo extends React.Component {
+
     componentDidMount() {
         const { dispatch } = this.props;
         dispatch(TodoActions.fetchTodos());
+        dispatch(MainActions.setTitle('Todos'));
     }
 
     render() {
         const { todos, actions } = this.props;
         return (
             <div className="todo">
-                <Header addTodo={actions.addTodo} dispatch={this.props.dispatch} />
-                <MainSection todos={todos} actions={actions} />
+                <Header addTodo={actions.addTodo} dispatch={this.props.dispatch}/>
+                <MainSection todos={todos} actions={actions}/>
             </div>
         )
     }
@@ -38,11 +41,12 @@ Todo.needData = [
 ];
 
 const state = (st) => ({
-    todos: st.todo
+    todos: st.todo,
+    mainState: st.main
 });
 
 const actions = (dispatch) => ({
-    actions: bindActionCreators(TodoActions, dispatch),
+    actions: bindActionCreators({...TodoActions, ...MainActions}, dispatch),
     dispatch: dispatch
 });
 

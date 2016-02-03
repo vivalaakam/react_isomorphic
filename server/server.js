@@ -71,7 +71,7 @@ app.use((req, res) => {
             res.status(400).send('Not Found');
         } else {
             let actions = routerState.components.reduce((actions, component) => {
-                if (component.WrappedComponent.needData && component.WrappedComponent.needData.length > 0) {
+                if (component.WrappedComponent && component.WrappedComponent.needData && component.WrappedComponent.needData.length > 0) {
                     actions.push.apply(actions, component.WrappedComponent.needData);
                 }
 

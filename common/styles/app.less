@@ -1,0 +1,75 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,700);
+
+@import "variables";
+@import "icon";
+
+
+html , body , #root {
+  margin:0px;
+  padding: 0px;
+  min-height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+}
+
+.toggler {
+  display: block;
+  height: @top-bar-height;
+  .toggler__link {
+    .icon-hamburger;
+    display: block;
+    height: @top-bar-height;
+    text-decoration: none;
+    &:active, &:focus {
+      outline: none;
+    }
+
+    &:hover {
+      background-color: rgba(0,0,0,.5);
+    }
+
+  }
+}
+
+.leftBar {
+  position: fixed;
+  width: @left-side-width;
+  background-color: @left-side-background;
+  top: 0px;
+  bottom: 0px;
+  color: #fff;
+  transition: @left-side-animation;
+}
+
+.content {
+  margin-left: @left-side-width;
+  transition: @left-side-animation;
+  padding: 15px;
+}
+
+.topBar {
+  margin-left: @left-side-width;
+  transition: @left-side-animation;
+}
+
+.app {
+  &.active {
+    .content {
+      transform: translateX(@left-side-fullWidth);
+      margin-left: 0px;
+    }
+
+    .leftBar {
+      width: @left-side-fullWidth;
+    }
+
+    .topBar {
+      transform: translateX(@left-side-fullWidth);
+      margin-left: 0px;
+    }
+  }
+}

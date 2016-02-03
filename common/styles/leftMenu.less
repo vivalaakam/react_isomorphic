@@ -1,0 +1,38 @@
+@import "variables";
+
+.menu {
+  .menu__list {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+  }
+
+  .menu__item {
+    .menu__item-element {
+      display: block;
+      line-height: @left-menu-item-height;
+      color: #fff;
+      text-decoration: none;
+      overflow: hidden;
+      display: block;
+
+      &:focus {
+        outline: none;
+      }
+
+      &:hover {
+        background-color: rgba(0, 0, 0, .5);
+      }
+    }
+
+    .menu__item-active {
+      background-color: rgba(0, 0, 0, .5);
+    }
+
+    .menu__item-textWrapper {
+      margin-left: @left-side-width;
+    }
+  }
+
+}
+

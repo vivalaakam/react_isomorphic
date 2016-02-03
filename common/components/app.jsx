@@ -1,29 +1,46 @@
 import React from 'react';
 import {Link} from 'react-router';
 import {connect} from 'react-redux';
+import classnames from 'classnames';
+import LeftBar from './leftbar.jsx';
+import TopBar from './topbar.jsx';
 
 if (process.env.BROWSER) {
     require('normalize-css/normalize.css');
+    require('../styles/app.less');
 }
 
 class App extends React.Component {
-    render() {
-        const links = [
-            '/todos',
-            '/page/-K9WfxAGG4l9SSkepNXN',
-            '/page/-K9WfzGTQtmHNO6Z5uZd',
-            '/page/-K9Wg-a47JmTHq83yVZ0'
-        ].map((l, i) =>
-            <p key={i}>
-                <Link to={l}>{l}</Link>
-            </p>
-        );
+    constructor(props) {
+        super(props);
 
+        this.toggleMenu = this.toggleMenu.bind(this);
+
+        this.state = {
+            menu: false
+        }
+    }
+
+    toggleMenu() {
+        this.setState({menu: !this.state.menu});
+    }
+
+    render() {
+        let appClass = classnames('app', {active: this.state.menu});
         return (
-            <div>
-                <h1>App Container</h1>
-                {links}
-                {this.props.children}
+            <div className={appClass}>
+                <div className="leftBar">
+                    <div className="toggler">
+                        <a href="javascript:void(0)" className="toggler__link" onClick={this.toggleMenu}>&nbsp;</a>
+                    </div>
+                    <LeftBar isActive={this.props.history.isActive}></LeftBar>
+                </div>
+                <TopBar>
+
+                </TopBar>
+                <div className="content">
+                    {this.props.children}
+                </div>
             </div>
         );
     }

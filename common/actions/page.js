@@ -1,4 +1,5 @@
 import * as CONSTANTS from '../constants/page';
+import { setTitle } from './main';
 import request from 'superagent';
 
 
@@ -25,6 +26,7 @@ function getPage(id) {
                 let data = JSON.parse(res.text);
                 if (res.status === 200) {
                     dispatch(receivePage(data));
+                    dispatch(setTitle(data.title));
                     resolve(data);
                 } else {
                     reject(data);
@@ -36,8 +38,11 @@ function getPage(id) {
 
 export function fetchPageIfNeed(id) {
     return (dispatch, getState) => {
-        if (!getState().page[id]) {
+        let page = getState().page[id];
+        if (!page) {
             dispatch(getPage(id));
+        } else {
+            dispatch(setTitle(page.title));
         }
     }
 }

@@ -1,0 +1,42 @@
+.icon {
+  position: relative;
+  display: block;
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 50%;
+    left: 0px;
+    transform: translate(15px, -50%);
+
+  }
+}
+
+.icon-hamburger {
+  .icon;
+
+  &:before {
+    background: url('../images/hamburger_white.svg') no-repeat;
+    background-size: contain;
+  }
+}
+
+.icon-checklist {
+  .icon;
+
+  &:before {
+    background: url('../images/checklist_white.svg') no-repeat;
+    background-size: contain;
+  }
+}
+
+.icon-page {
+  .icon;
+
+  &:before {
+    background: url('../images/page_white.svg') no-repeat;
+    background-size: contain;
+  }
+}
