@@ -2,7 +2,9 @@ import React from 'react';
 import {Link} from 'react-router';
 import {connect} from 'react-redux';
 
-import 'normalize-css';
+if (process.env.BROWSER) {
+    require('normalize-css/normalize.css');
+}
 
 class App extends React.Component {
     render() {

@@ -21,6 +21,8 @@ const store = compose(
 
 const mountNode = document.getElementById(MOUNT_ID);
 
+
+
 ReactDOM.render((
     <Provider store={store}>
         <ReduxRouter routes={routes}/>

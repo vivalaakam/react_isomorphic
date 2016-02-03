@@ -2,6 +2,7 @@ import webpack from 'webpack';
 import path from 'path';
 
 import ExtractTextPlugin from "extract-text-webpack-plugin"
+import LessPluginAutoprefix from 'less-plugin-autoprefix';
 
 
 export default {
@@ -26,12 +27,25 @@ export default {
             }, {
                 test: /\.css?/,
                 loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+            }, {
+                test: /\.less$/,
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader!less-loader')
             }
+        ]
+    },
+    lessLoader: {
+        lessPlugins: [
+            new LessPluginAutoprefix({browsers: ["last 2 versions"]})
         ]
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
-        new ExtractTextPlugin("style.css")
+        new ExtractTextPlugin("style.css"),
+        new webpack.DefinePlugin({
+            "process.env": {
+                BROWSER: JSON.stringify(true)
+            }
+        })
     ]
 };

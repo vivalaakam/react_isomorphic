@@ -7,6 +7,10 @@ import {RECEIVE_TODOS} from '../constants/todo';
 import Header from './header.jsx'
 import MainSection from './mainSection.jsx'
 
+if (process.env.BROWSER) {
+    require('../styles/todo.less');
+}
+
 class Todo extends React.Component {
     componentDidMount() {
         const { dispatch } = this.props;
@@ -16,7 +20,7 @@ class Todo extends React.Component {
     render() {
         const { todos, actions } = this.props;
         return (
-            <div>
+            <div className="todo">
                 <Header addTodo={actions.addTodo} dispatch={this.props.dispatch} />
                 <MainSection todos={todos} actions={actions} />
             </div>
