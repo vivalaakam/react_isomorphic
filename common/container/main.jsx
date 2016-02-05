@@ -6,13 +6,13 @@ import { bindActionCreators } from 'redux'
 class Main extends React.Component {
     componentDidMount() {
         const { dispatch } = this.props;
-        dispatch(MainActions.setTitle('main page'));
     }
 
     render() {
         return (
             <div>
-                my pretty page
+                <h2>Main page</h2>
+                <p>my pretty page</p>
             </div>
         );
     }

@@ -31,9 +31,9 @@ class Login extends React.Component {
     render() {
         return (
             <div className="login">
-                <h2>
+                <h3>
                     Please, sign in for continue
-                </h2>
+                </h3>
                 <div className="block">
                     <label className="label">Login</label>
                     <input className="control" ref="login" type="text"/>
@@ -43,7 +43,7 @@ class Login extends React.Component {
                     <input className="control" ref="password" type="password"/>
                 </div>
                 <div className="block">
-                    <button className="btn" onClick={this.onClickAuth}>Sign in</button>
+                    <button className="button" onClick={this.onClickAuth}>Sign in</button>
                 </div>
             </div>
         );

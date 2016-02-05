@@ -7,12 +7,12 @@ import { bindActionCreators } from 'redux'
 class Pages extends React.Component {
     componentDidMount() {
         const { dispatch } = this.props;
-        dispatch(MainActions.setTitle('Pages'));
     }
 
     render() {
         return (
             <div className="pages">
+                <h2>Pages</h2>
                 <ul className="pages__list">
                     <li className="pages__list-item pages__item">
                         <Link to="/page/-K9WfxAGG4l9SSkepNXN">First Page</Link>

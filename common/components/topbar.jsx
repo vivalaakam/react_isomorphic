@@ -23,7 +23,7 @@ class TopBar extends React.Component {
         return (
             <div className="topBar">
                 <div className="topBar__title">
-                    {this.props.mainState.title}
+                    <Link className="topBar__title-link" to="/">Project name</Link>
                 </div>
                 <div className="topBar__user">
                     <Authentificated>
@@ -44,7 +44,6 @@ class TopBar extends React.Component {
 }
 
 const state = (st) => ({
-    mainState: st.main,
     authState: st.auth
 });
 

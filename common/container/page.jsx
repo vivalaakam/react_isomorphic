@@ -25,22 +25,24 @@ class Page extends React.Component {
     }
 
     isFetching() {
-        return <p>...isFetching</p>
+        return (
+            <div>
+                <p>...isFetching</p>
+            </div>
+        );
     }
 
-    content(text) {
-        return <p>{text}</p>
+    content(page) {
+        return (
+            <div>
+                <h2>{page.title}</h2>
+                <p>{page.text}</p>
+            </div>);
     }
 
     render() {
         let page = this.props.pagesState[this.props.params.id] || {};
-        let content = page.isFetching ? this.isFetching() : this.content(page.text);
-
-        return (
-            <div>
-                {content}
-            </div>
-        )
+        return page.isFetching ? this.isFetching() : this.content(page);
     }
 }
 
@@ -56,8 +58,7 @@ Page.needData = [
 Page.title = 'Page';
 
 const state = (st) => ({
-    pagesState: st.page,
-    mainState: st.main
+    pagesState: st.page
 });
 
 const actions = (dispatch) => ({
