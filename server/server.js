@@ -13,7 +13,8 @@ import bodyParser from 'body-parser';
 import session from 'express-session';
 
 import mongoose from 'mongoose';
-import monogooseSession from 'mongoose-session';
+import mongoStore from 'connect-mongo';
+
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
@@ -35,6 +36,7 @@ import {SIGNIN_AUTH} from '../common/constants/auth';
 const app = express();
 const compiler = webpack(config);
 
+const MongoStore = mongoStore(session);
 
 mongoose.connect(process.env.MONGOLAB_URI);
 
@@ -71,7 +73,7 @@ app.use(session({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true,
-    store: monogooseSession(mongoose)
+    store: new MongoStore({mongooseConnection: mongoose.connection})
 }));
 
 app.use(webpackDevMiddleware(compiler, {
