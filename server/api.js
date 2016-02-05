@@ -6,6 +6,30 @@ import auth from './modules/auth';
 
 const router = express.Router();
 
+router.get('/pages', ...page.getPages, (req, res) => {
+    if (!res.locals.error) {
+        res.json(res.locals.data);
+    } else {
+        res.status(401).json(res.locals.error);
+    }
+});
+
+router.post('/page/create', ...page.createPage, (req, res) => {
+    if (!res.locals.error) {
+        res.json(res.locals.data);
+    } else {
+        res.status(401).json(res.locals.error);
+    }
+});
+
+router.put('/page/:id/edit', ...page.updatePage, (req, res) => {
+    if (!res.locals.error) {
+        res.json(res.locals.data);
+    } else {
+        res.status(401).json(res.locals.error);
+    }
+});
+
 router.get('/page/:id', ...page.getPage, (req, res) => {
     if (!res.locals.error) {
         res.json(res.locals.data);
@@ -15,6 +39,10 @@ router.get('/page/:id', ...page.getPage, (req, res) => {
     }
 });
 
+router.delete('/page/:id', ...page.removePage, (req, res) => {
+    res.json({_id: req.params.id});
+
+});
 
 router.get('/todos', ...todo.getTodos, (req, res) => {
     if (!res.locals.error) {

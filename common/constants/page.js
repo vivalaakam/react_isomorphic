@@ -1,2 +1,8 @@
 export const RECEIVE_PAGE = 'RECEIVE_PAGE';
 export const REQUEST_PAGE = 'REQUEST_PAGE';
+export const RESTORE_PAGE = 'RESTORE_PAGE';
+export const UPDATING_PAGE = 'UPDATING_PAGE';
+export const UPDATE_PAGE = 'UPDATE_PAGE';
+
+export const RECEIVE_PAGES = 'RECEIVE_PAGES';
+export const REQUEST_PAGES = 'REQUEST_PAGES';

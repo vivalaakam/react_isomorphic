@@ -1,29 +1,50 @@
 import React from 'react';
 import { Link } from 'react-router';
 import {connect} from 'react-redux';
-import * as MainActions from '../actions/main';
+import * as PagesActions from '../actions/pages';
 import { bindActionCreators } from 'redux'
+
+import Authentificated from '../components/authentificated.jsx'
 
 class Pages extends React.Component {
     componentDidMount() {
         const { dispatch } = this.props;
+        dispatch(PagesActions.fetchPagesIfNeed());
+    }
+
+    isFetching() {
+        return (<p>...isFetching</p>);
+    }
+
+    pages() {
+        let {pages} = this.props.pagesState;
+        return (
+            <ul>
+                {pages.map((page, i) => {
+                    let link = `/page/${page._id}`;
+                    return (
+                        <li key={i} className="pages__list-item pages__item">
+                            <Link to={link}>{page.title}</Link>
+                        </li>
+                    );
+                })}
+            </ul>
+        )
+
     }
 
     render() {
+        let content = this.props.pagesState.isFetching ? this.isFetching() : this.pages();
+
         return (
             <div className="pages">
                 <h2>Pages</h2>
-                <ul className="pages__list">
-                    <li className="pages__list-item pages__item">
-                        <Link to="/page/-K9WfxAGG4l9SSkepNXN">First Page</Link>
-                    </li>
-                    <li className="pages__list-item pages__item">
-                        <Link to="/page/-K9WfzGTQtmHNO6Z5uZd">Second Page</Link>
-                    </li>
-                    <li className="pages__list-item pages__item">
-                        <Link to="/page/-K9Wg-a47JmTHq83yVZ0">Third Page</Link>
-                    </li>
-                </ul>
+                <div>
+                    <Authentificated>
+                        <Link to="/page/create">Create page</Link>
+                    </Authentificated>
+                </div>
+                {content}
             </div>
         );
     }
@@ -34,11 +55,11 @@ Pages.needData = [];
 
 
 const state = (st) => ({
-    mainState: st.main
+    pagesState: st.pages
 });
 
 const actions = (dispatch) => ({
-    actions: bindActionCreators({...MainActions}, dispatch),
+    actions: bindActionCreators({...PagesActions}, dispatch),
     dispatch: dispatch
 });
 

@@ -1,9 +1,12 @@
 import React from 'react'
+import {Link} from 'react-router'
 import { bindActionCreators } from 'redux'
 import {connect} from 'react-redux';
 import * as PageActions from '../actions/page';
-import * as MainActions from '../actions/main';
 import {RECEIVE_PAGE} from '../constants/page';
+
+import Authentificated from '../components/authentificated.jsx';
+
 class Page extends React.Component {
     constructor(props) {
         super(props);
@@ -33,21 +36,27 @@ class Page extends React.Component {
     }
 
     content(page) {
+        let link = `/page/${page._id}/edit`;
         return (
             <div>
                 <h2>{page.title}</h2>
+                <div>
+                    <Authentificated>
+                        <Link to={link}>Update page</Link>
+                    </Authentificated>
+                </div>
                 <p>{page.text}</p>
             </div>);
     }
 
     render() {
-        let page = this.props.pagesState[this.props.params.id] || {};
-        return page.isFetching ? this.isFetching() : this.content(page);
+        let {pageState} = this.props;
+        return pageState.isFetching ? this.isFetching() : this.content(pageState);
     }
 }
 
 Page.propTypes = {
-    pagesState: React.PropTypes.object.isRequired,
+    pageState: React.PropTypes.object.isRequired,
     dispatch: React.PropTypes.func.isRequired
 };
 
@@ -55,14 +64,12 @@ Page.needData = [
     {name: 'getPage', type: RECEIVE_PAGE}
 ];
 
-Page.title = 'Page';
-
 const state = (st) => ({
-    pagesState: st.page
+    pageState: st.page
 });
 
 const actions = (dispatch) => ({
-    actions: bindActionCreators({...PageActions, ...MainActions}, dispatch),
+    actions: bindActionCreators({...PageActions}, dispatch),
     dispatch: dispatch
 });
 
