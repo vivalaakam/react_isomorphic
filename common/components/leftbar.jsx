@@ -1,4 +1,5 @@
 import React from 'react'
+import Authentificated from './authentificated.jsx'
 import { Link } from 'react-router';
 import classnames from 'classnames';
 
@@ -17,10 +18,14 @@ export  default class LeftMenu extends React.Component {
         return (
             <div className="menu">
                 <ul className="menu__list">
+                    <Authentificated>
+                        <li className="menu__list-element menu__item">
+                            <Link className={checkboxClass} to='/todos'>
+                                <span className="menu__item-textWrapper">Todos</span>
+                            </Link>
+                        </li>
+                    </Authentificated>
                     <li className="menu__list-element menu__item">
-                        <Link className={checkboxClass} to='/todos'>
-                            <span className="menu__item-textWrapper">Todos</span>
-                        </Link>
                         <Link className={pagesClass} to="/pages">
                             <span className="menu__item-textWrapper">Pages</span>
                         </Link>

@@ -5,8 +5,8 @@ import * as TodoActions from '../actions/todo';
 import * as MainActions from '../actions/main';
 import {RECEIVE_TODOS} from '../constants/todo';
 
-import Header from './header.jsx'
-import MainSection from './mainSection.jsx'
+import Header from '../components/header.jsx'
+import MainSection from '../components/mainSection.jsx'
 
 if (process.env.BROWSER) {
     require('../styles/todo.less');
@@ -16,7 +16,7 @@ class Todo extends React.Component {
 
     componentDidMount() {
         const { dispatch } = this.props;
-        dispatch(TodoActions.fetchTodos());
+        dispatch(TodoActions.fetchTodos(this.props.authState.token));
         dispatch(MainActions.setTitle('Todos'));
     }
 
@@ -42,7 +42,8 @@ Todo.needData = [
 
 const state = (st) => ({
     todos: st.todo,
-    mainState: st.main
+    mainState: st.main,
+    authState: st.auth
 });
 
 const actions = (dispatch) => ({

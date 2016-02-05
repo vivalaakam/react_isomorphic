@@ -7,10 +7,10 @@ export default function todo(state = [], action = {}) {
             return [action.todo, ...state];
 
         case DELETE_TODO:
-            return state.filter(todo => todo.id !== action.id);
+            return state.filter(todo => todo._id !== action._id);
 
         case EDIT_TODO:
-            return state.map(todo => todo.id === action.todo.id ? Object.assign({}, todo, action.todo) : todo);
+            return state.map(todo => todo._id === action.todo._id ? Object.assign({}, todo, action.todo) : todo);
 
         case RECEIVE_TODOS:
             return action.todos;

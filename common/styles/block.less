@@ -1,0 +1,41 @@
+.block {
+  color: @block-color;
+  margin-bottom: 10px;
+  &:last-child {
+    margin-bottom: 0px;
+  }
+  .label {
+    display: block;
+    padding: 3px 0px;
+  }
+
+  .control {
+    display: block;
+    width: 100%;
+    padding: 10px 6px;
+    border: 1px solid @block-control-border;
+    border-radius: @block-control-radius;
+  }
+
+  .btn {
+    width: 100%;
+    display: block;
+    padding: 10px 6px;
+    color: #fff;
+    border-radius: @block-control-radius;
+    border: solid 1px @block-btn-color;
+    text-transform: uppercase;
+    background-color: @block-btn-color;
+
+    &:focus {
+      outline: none;
+      cursor: pointer;
+    }
+
+    &:hover {
+      color: #fff;
+      background-color: @block-btn-colorHover;
+      border-color: @block-btn-colorHover;
+    }
+  }
+}

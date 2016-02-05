@@ -1,61 +1,74 @@
 import express from 'express';
-import * as pages from './models/page';
-import * as todos from './models/todo';
+import { UNAUTHORIZED } from './constants';
+import page from './modules/page';
+import todo from './modules/todo';
+import auth from './modules/auth';
+
 const router = express.Router();
 
-router.get('/page/:id', (req, res) => {
-    pages.getPage(req.params, (value) => {
-        res.json(value);
-    }, (error) => {
-        res.status(404).json(error);
-    });
+router.get('/page/:id', ...page.getPage, (req, res) => {
+    if (!res.locals.error) {
+        res.json(res.locals.data);
+    } else {
+        let {error} = res.locals;
+        res.status(404).json({error});
+    }
 });
 
 
-router.get('/todos', (req, res) => {
-    todos.getTodos((values) => {
-        res.json(values.todos);
-    });
+router.get('/todos', ...todo.getTodos, (req, res) => {
+    if (!res.locals.error) {
+        res.json(res.locals.data);
+    } else {
+        res.status(401).json(res.locals.error);
+    }
 });
 
-router.post('/todos', (req, res) => {
-    todos.createTodo({ text:req.body.text , completed:false }, (value) => {
-        res.json(value);
-    });
+router.post('/todos', ...todo.createTodo, (req, res) => {
+    res.json(res.locals.data);
 });
 
-router.get('/todos/:id', (req, res) => {
-    todos.getTodo(req.params.id, (value) => {
-        res.json(value);
-    });
+router.get('/todo/:id', ...todo.getTodo, (req, res) => {
+    if (!res.locals.error) {
+        res.json(res.locals.data);
+    } else {
+        let {error} = res.locals;
+        res.status(404).json({error});
+    }
 });
 
-router.delete('/todos/:id' , (req, res) => {
-    todos.removeTodo(req.params.id, (id) => {
-        res.json( { id } );
-    });
+router.delete('/todos/:id', ...todo.removeTodo, (req, res) => {
+    res.json({_id: req.params.id});
 });
 
-router.post('/todos/clearCompleted', (req, res) => {
-    todos.removeCompletedTodos(() => {
-        todos.getTodos((values) => {
-            res.json(values.todos);
-        });
-    });
+router.post('/todos/clearCompleted', ...todo.removeCompletedTodos, (req, res) => {
+    res.json(res.locals.data);
 });
 
-router.post('/todos/completeAll', (req, res) => {
-    todos.completeAllTodos(() => {
-        todos.getTodos((values) => {
-            res.json(values.todos);
-        });
-    });
+router.post('/todos/completeAll', ...todo.completeAllTodos, (req, res) => {
+    res.json(res.locals.data);
 });
 
-router.put('/todos/:id' , (req, res) => {
-    todos.updateTodo(req.params.id, req.body, (value) => {
-        res.json(value);
-    });
+router.put('/todos/:id', ...todo.updateTodo, (req, res) => {
+    if (!res.locals.error) {
+        res.json(res.locals.data);
+    } else {
+        let {error} = res.locals;
+        res.status(404).json({error});
+    }
+});
+
+router.post('/signin', ...auth.signin, (req, res) => {
+    if (!res.locals.error) {
+        res.json(res.locals.data);
+    } else {
+        let {error} = res.locals;
+        res.status(404).json({error});
+    }
+});
+
+router.post('/signout', ...auth.signout, (req, res) => {
+    res.json(res.locals.data);
 });
 
 export default router;

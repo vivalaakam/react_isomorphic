@@ -1,3 +1,4 @@
+import path from 'path';
 import express from 'express';
 import webpack from 'webpack';
 import React from 'react';
@@ -8,7 +9,11 @@ import {ReduxRouter} from 'redux-router'
 import {reduxReactRouter, match} from 'redux-router/server';
 import serialize from 'serialize-javascript';
 import { createMemoryHistory } from 'history';
+import bodyParser from 'body-parser';
+import session from 'express-session';
 
+import mongoose from 'mongoose';
+import monogooseSession from 'mongoose-session';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
@@ -19,10 +24,19 @@ import routes from '../common/routes';
 
 
 import api from './api';
-import fetchData from './fetchData';
+import local from './local';
+
+import {getAuth} from './modules/auth';
+import dispatch from './dispatch';
+
+import {SIGNIN_AUTH} from '../common/constants/auth';
+
 
 const app = express();
 const compiler = webpack(config);
+
+
+mongoose.connect(process.env.MONGOLAB_URI);
 
 const getMarkup = (store) => {
     const initialState = serialize(store.getState());
@@ -48,6 +62,17 @@ const getMarkup = (store) => {
   `;
 };
 
+app.use(express.static(path.join(__dirname, '../public')));
+
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
+
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    store: monogooseSession(mongoose)
+}));
 
 app.use(webpackDevMiddleware(compiler, {
     noInfo: true,
@@ -61,28 +86,33 @@ app.use('/api', api);
 app.use((req, res) => {
     const store = reduxReactRouter({routes, createHistory: createMemoryHistory})(createStore)(reducer);
 
-    store.dispatch(match(req.url, (error, redirectLocation, routerState) => {
-        if (error) {
-            console.error('Router error:', error);
-            res.status(500).send(error.message);
-        } else if (redirectLocation) {
-            res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-        } else if (!routerState) {
-            res.status(400).send('Not Found');
-        } else {
-            let actions = routerState.components.reduce((actions, component) => {
-                if (component.WrappedComponent && component.WrappedComponent.needData && component.WrappedComponent.needData.length > 0) {
-                    actions.push.apply(actions, component.WrappedComponent.needData);
-                }
+    let auth = [getAuth, (req, res, next) => {
+        store.dispatch({
+            type: SIGNIN_AUTH,
+            ...res.locals.data
+        });
+        next();
+    }];
 
-                return actions;
-            }, []);
+    dispatch(auth, req, res, () => {
+        store.dispatch(match(req.url, (error, redirectLocation, routerState) => {
+            if (error) {
+                console.error('Router error:', error);
+                res.status(500).send(error.message);
+            } else if (redirectLocation) {
+                res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+            } else if (!routerState) {
+                res.status(400).send('Not Found');
+            } else {
+                let {components} = routerState;
+                req.params = {...req.params, ... routerState.params};
 
-            fetchData(routerState.params, actions, store).then(() => {
-                res.status(200).send(getMarkup(store));
-            });
-        }
-    }));
+                local(components, req, res, store).then(() => {
+                    res.status(200).send(getMarkup(store));
+                });
+            }
+        }));
+    });
 });
 
 app.listen(3000, 'localhost', error => {

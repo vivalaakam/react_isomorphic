@@ -8,10 +8,10 @@ function addTodoDispatch(todo) {
     }
 }
 
-function deleteTodoDispatch(id) {
+function deleteTodoDispatch(_id) {
     return {
         type: types.DELETE_TODO,
-        id
+        _id
     }
 }
 
@@ -30,16 +30,17 @@ function receiveTodosDispatch(todos) {
     }
 }
 
-export function fetchTodos() {
+export function fetchTodos(token) {
     return dispatch => new Promise((resolve , reject) => {
         request
             .get('/api/todos')
+            .set('Authorization', token)
             .send()
             .end((error , res) => {
                 if (res) {
                     let data = JSON.parse(res.text);
                     if (res.status === 200) {
-                        dispatch( receiveTodosDispatch( data ) );
+                        dispatch( receiveTodosDispatch( data.todos ) );
                         resolve(data);
                     } else {
                         reject(data);
@@ -130,7 +131,7 @@ export function completeAllTodo() {
             .end((error, res) => {
                 let data = JSON.parse(res.text);
                 if (res.status === 200) {
-                    dispatch( receiveTodosDispatch( data ) );
+                    dispatch( receiveTodosDispatch( data.todos ) );
                     resolve(data);
                 } else {
                     reject(data);
@@ -146,7 +147,7 @@ export function clearComletedTodo() {
             .end((error, res) => {
                 let data = JSON.parse(res.text);
                 if (res.status === 200) {
-                    dispatch( receiveTodosDispatch( data ) );
+                    dispatch( receiveTodosDispatch( data.todos ) );
                     resolve(data);
                 } else {
                     reject(data);

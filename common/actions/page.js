@@ -2,7 +2,6 @@ import * as CONSTANTS from '../constants/page';
 import { setTitle } from './main';
 import request from 'superagent';
 
-
 function receivePage(data) {
     return {
         type: CONSTANTS.RECEIVE_PAGE,
@@ -34,7 +33,6 @@ function getPage(id) {
             });
     });
 }
-
 
 export function fetchPageIfNeed(id) {
     return (dispatch, getState) => {

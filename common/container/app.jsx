@@ -1,9 +1,14 @@
 import React from 'react';
 import {Link} from 'react-router';
 import {connect} from 'react-redux';
+import {SIGNIN_AUTH} from '../constants/auth';
+
 import classnames from 'classnames';
-import LeftBar from './leftbar.jsx';
-import TopBar from './topbar.jsx';
+import LeftBar from '../components/leftbar.jsx';
+import TopBar from '../components/topbar.jsx';
+
+import * as AuthActions from '../actions/auth';
+import { bindActionCreators } from 'redux'
 
 if (process.env.BROWSER) {
     require('normalize-css/normalize.css');
@@ -33,9 +38,10 @@ class App extends React.Component {
                     <div className="toggler">
                         <a href="javascript:void(0)" className="toggler__link" onClick={this.toggleMenu}>&nbsp;</a>
                     </div>
-                    <LeftBar isActive={this.props.history.isActive}></LeftBar>
+                    <LeftBar auth={this.props.authState}
+                             isActive={this.props.history.isActive}></LeftBar>
                 </div>
-                <TopBar>
+                <TopBar logout={AuthActions.signout}  auth={this.props.authState}>
 
                 </TopBar>
                 <div className="content">
@@ -50,4 +56,16 @@ App.propTypes = {
     children: React.PropTypes.node
 };
 
-export default connect(state => ({routerState: state.router}))(App)
+App.needData = [];
+
+const state = (st) => ({
+    routerState: st.router,
+    authState: st.auth
+});
+
+const actions = (dispatch) => ({
+    actions: bindActionCreators({...AuthActions}, dispatch),
+    dispatch: dispatch
+});
+
+export default connect(state, actions)(App)

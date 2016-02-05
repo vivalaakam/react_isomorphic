@@ -1,18 +1,25 @@
 import React from 'react';
-import {Route} from 'react-router';
+import {Route, IndexRoute} from 'react-router';
 
-import App from './components/app.jsx';
+import App from './container/app.jsx';
 
-import Pages from './components/pages.jsx';
-import Page from './components/page.jsx';
-import Todo from './components/todo.jsx';
+import Pages from './container/pages.jsx';
+import Page from './container/page.jsx';
+
+import Todo from './container/todo.jsx';
+import Main from './container/main.jsx';
+import Login from './container/login.jsx';
+
+import Restricted from './container/restricted.jsx';
 
 export default (
     <Route path="/" component={App}>
-        <Route name="todos" path="/todos" component={Todo} />
-        <Route name="pages" path="/pages" component={Pages}>
-        </Route>
+        <IndexRoute component={Main}/>
+        <Route name="pages" path="/pages" component={Pages}/>
         <Route name="page" path="/page/:id" component={Page}/>
-
+        <Route name="login" path="/login" component={Login}/>
+        <Route path="/" component={Restricted}>
+            <Route name="todos" path="/todos" component={Todo}/>
+        </Route>
     </Route>
 );

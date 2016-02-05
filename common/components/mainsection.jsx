@@ -39,8 +39,8 @@ class MainSection extends Component {
     }
 
     renderFooter(completedCount) {
-        const { todos } = this.props
-        const { filter } = this.state
+        const { todos } = this.props;
+        const { filter } = this.state;
         const activeCount = todos.length - completedCount;
 
         if (todos.length) {
@@ -58,7 +58,7 @@ class MainSection extends Component {
         const { todos, actions } = this.props;
         const { filter } = this.state;
 
-        const filteredTodos = todos.filter(TODO_FILTERS[filter])
+        const filteredTodos = todos.filter(TODO_FILTERS[filter]);
         const completedCount = todos.reduce((count, todo) =>
                 todo.completed ? count + 1 : count,
             0
@@ -69,7 +69,7 @@ class MainSection extends Component {
                 {this.renderToggleAll(completedCount)}
                 <ul className="todo-list">
                     {filteredTodos.map(todo =>
-                        <TodoItem key={todo.id} todo={todo} {...actions} />
+                        <TodoItem key={todo._id} todo={todo} {...actions} />
                     )}
                 </ul>
                 {this.renderFooter(completedCount)}
