@@ -4,7 +4,7 @@ const CLEAR_PAGE = {
     isFetching: true,
     inUpdate: false,
     title: '',
-    text: ''
+    text:  " "
 };
 
 export default function page(state = {}, action = {}) {

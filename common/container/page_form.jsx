@@ -1,15 +1,21 @@
 import React from 'react';
+import classnames from 'classnames';
 import { bindActionCreators } from 'redux'
 import {connect} from 'react-redux';
 import * as PageActions from '../actions/page';
+
+if (process.env.BROWSER) {
+    const ace = require('brace');
+    require('brace/mode/markdown');
+    require('../styles/page_form.less');
+}
 
 class PageForm extends React.Component {
     constructor(props) {
         super(props);
 
         this.savePage = this.savePage.bind(this);
-        this.onChangeText = this.onChangeText.bind(this);
-        this.onChangeTitle = this.onChangeTitle.bind(this);
+        this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount() {
@@ -19,6 +25,56 @@ class PageForm extends React.Component {
         } else {
             dispatch(PageActions.emptyPage());
         }
+
+        if (process.env.BROWSER) {
+            this.initEditor(this.props);
+        }
+    }
+
+    componentDidUpdate() {
+        if (process.env.BROWSER) {
+            this.initEditor(this.props);
+        }
+    }
+
+    componentWillUnmount() {
+        if (process.env.BROWSER) {
+            this.editor.destroy();
+            this.editor = null;
+        }
+    }
+
+    initEditor(props) {
+
+        this.editor = ace.edit(this.refs.editor);
+        this.editor.getSession().setMode('ace/mode/markdown');
+        this.editor.renderer.setShowGutter(false);
+        this.editor.setOptions({
+            highlightActiveLine: false,
+            highlightGutterLine: false,
+            printMargin: false,
+            maxLines: Infinity,
+            minLines: 20
+        });
+
+        this.editor.$blockScrolling = Infinity;
+
+        this.editor.on('focus', () => {
+            this.refs.wrapper.classList.add('focus');
+        });
+        this.editor.on('blur', () => {
+            this.refs.wrapper.classList.remove('focus');
+        });
+
+        let {text , cursor_row, cursor_column} = props.page;
+
+        if (text) {
+            this.editor.setValue(text, 1);
+            if (cursor_row && cursor_column) {
+                this.editor.getSession().getSelection().selectionLead.setPosition(cursor_row, cursor_column);
+            }
+        }
+
     }
 
     savePage(e) {
@@ -26,24 +82,31 @@ class PageForm extends React.Component {
         let {dispatch , routeParams, page} = this.props;
         let {title, text} = page;
 
+        text = this.editor.getValue() || " ";
+
         if (routeParams.id) {
             dispatch(PageActions.updatePage({text, title}, routeParams.id));
         } else {
-            dispatch(PageActions.createPage({text, text}));
+            dispatch(PageActions.createPage({text, title}));
         }
     }
 
-    onChangeTitle(e) {
-        this.props.dispatch(PageActions.changeData({title: e.currentTarget.value}));
+    onChange(e) {
+        let {row, column} = this.editor.getCursorPosition();
+        let data = {
+            title: e.currentTarget.value,
+            text: this.editor.getValue(),
+            cursor_row: row,
+            cursor_column: column
+        };
+        this.props.dispatch(PageActions.changeData(data));
     }
 
-    onChangeText(e) {
-        this.props.dispatch(PageActions.changeData({text: e.currentTarget.value}));
-    }
 
     render() {
         let title = this.props.params.id ? 'Update page' : 'Create page';
         let {page} = this.props;
+
         return (
             <div className="pageForm">
                 <h2>{title}</h2>
@@ -51,12 +114,13 @@ class PageForm extends React.Component {
                     <div className="block">
                         <label className="label">Title</label>
                         <input className="control" type="text" ref="title" value={page.title}
-                               onChange={this.onChangeTitle}/>
+                               onChange={this.onChange}/>
                     </div>
                     <div className="block">
                         <label className="label">Text</label>
-                        <textarea className="control" ref="text" value={page.text}
-                                  onChange={this.onChangeText}></textarea>
+                        <div className="pageForm__editor-wrapper" ref="wrapper">
+                            <div className="pageForm__editor" ref="editor"></div>
+                        </div>
                     </div>
                     <div className="block">
                         <button className="button" onClick={this.savePage}>
