@@ -42,6 +42,7 @@
     "redux": "3.x",
     "redux-router": "1.0.0-beta7",
     "redux-thunk": "^1.0.3",
+    "remarkable": "^1.6.2",
     "serialize-javascript": "^1.1.2",
     "style-loader": "^0.13.0",
     "superagent": "^1.7.2",

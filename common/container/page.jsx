@@ -1,4 +1,5 @@
 import React from 'react'
+import Remarkable from 'remarkable'
 import {Link} from 'react-router'
 import { bindActionCreators } from 'redux'
 import {connect} from 'react-redux';
@@ -10,6 +11,8 @@ import Authentificated from '../components/authentificated.jsx';
 class Page extends React.Component {
     constructor(props) {
         super(props);
+
+        this.md = new Remarkable();
     }
 
     componentDidMount() {
@@ -37,15 +40,16 @@ class Page extends React.Component {
 
     content(page) {
         let link = `/page/${page._id}/edit`;
+        let text = { __html: this.md.render(page.text) };
         return (
-            <div>
-                <h2>{page.title}</h2>
-                <div>
+            <div className="page">
+                <h2 className="page__title">{page.title}</h2>
+                <div className="page__edit">
                     <Authentificated>
                         <Link to={link}>Update page</Link>
                     </Authentificated>
                 </div>
-                <p>{page.text}</p>
+                <div className="page__text" dangerouslySetInnerHTML={text}></div>
             </div>);
     }
 
