@@ -29,12 +29,12 @@ class TopBar extends React.Component {
                     <Authentificated>
                         <div className="topBar__user-wrapper">
                             <span className="topBar__user-name">{this.props.authState.email}</span>
-                            <a href="javascript:void(0)" className="topBar__user-link" onClick={this.logout}>Logout</a>
+                            <a href="javascript:void(0)" className="topBar__user-link btn-white btn-small" onClick={this.logout}>Logout</a>
                         </div>
                     </Authentificated>
                     <Authentificated reverse={true}>
                         <div className="topBar__user-wrapper">
-                            <Link className="topBar__user-link" to="/login">Login</Link>
+                            <Link className="topBar__user-link btn-white btn-small" to="/login">Login</Link>
                         </div>
                     </Authentificated>
                 </div>

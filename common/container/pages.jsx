@@ -38,12 +38,14 @@ class Pages extends React.Component {
 
         return (
             <div className="pages">
-                <h2>Pages</h2>
-                <div>
-                    <Authentificated>
-                        <Link to="/page/create">Create page</Link>
-                    </Authentificated>
-                </div>
+                <h2 className="title">
+                    <span className="title__name">Pages</span>
+                    <span className="title__button">
+                        <Authentificated>
+                            <Link to="/page/create" className="btn btn-accent btn-large">Create page</Link>
+                        </Authentificated>
+                    </span>
+                </h2>
                 {content}
             </div>
         );

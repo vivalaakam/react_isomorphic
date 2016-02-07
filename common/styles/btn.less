@@ -1,0 +1,56 @@
+.btn {
+  font-size: 13px;
+  border: solid 2px;
+  border-radius: 40px;
+  display: inline-block;
+  text-transform: uppercase;
+  color: #FF5274;
+  text-decoration: none;
+
+  &:hover, &:focus {
+    color: @btn-color;
+    border-color: #FF5274;
+    background-color: #FF5274;
+  }
+}
+
+.btn-white {
+  color: @btn-color;
+  font-size: 13px;
+  border: solid 2px;
+  border-radius: 40px;
+  display: inline-block;
+  border-color: @btn-color;
+}
+
+.btn-white:hover, .btn-white:focus {
+  color: #FF5274;
+  border-color: @btn-backgroudColor;
+}
+
+.btn-fill {
+  color: @btn-color;
+  border: solid 2px @btn-backgroudColor;
+  border-radius: 40px;
+  display: inline-block;
+  text-transform: uppercase;
+  background-color: @btn-backgroudColor;
+}
+
+.btn-fill:hover, .btn-fill:focus {
+  color: @btn-color;
+  background-color: @btn-backgroundColorHover;
+  border-color: @btn-backgroundColorHover;
+}
+
+.btn-small {
+  padding: 8px 40px;
+}
+
+.btn-large {
+  padding: 15px 40px;
+}
+
+.btn-margin-right {
+  margin-right: 20px;
+}

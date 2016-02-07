@@ -8,6 +8,10 @@ import {RECEIVE_PAGE} from '../constants/page';
 
 import Authentificated from '../components/authentificated.jsx';
 
+if (process.env.BROWSER) {
+    require('../styles/page.less');
+}
+
 class Page extends React.Component {
     constructor(props) {
         super(props);
@@ -40,15 +44,17 @@ class Page extends React.Component {
 
     content(page) {
         let link = `/page/${page._id}/edit`;
-        let text = { __html: this.md.render(page.text) };
+        let text = {__html: this.md.render(page.text)};
         return (
             <div className="page">
-                <h2 className="page__title">{page.title}</h2>
-                <div className="page__edit">
-                    <Authentificated>
-                        <Link to={link}>Update page</Link>
-                    </Authentificated>
-                </div>
+                <h2 className="title">
+                    <span className="title__name">{page.title}</span>
+                    <span className="title__button">
+                        <Authentificated>
+                            <Link to={link} className="btn btn-accent btn-large">Update page</Link>
+                        </Authentificated>
+                    </span>
+                </h2>
                 <div className="page__text" dangerouslySetInnerHTML={text}></div>
             </div>);
     }
