@@ -1,0 +1,42 @@
+@import './variables';
+
+.modal {
+  display: none;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: fade(@modal-main, 60%);
+  width: 100vw;
+  height: 100vh;
+  z-index: 10;
+
+  &.modal__open {
+    display: block;
+  }
+
+  .modal__close {
+    text-decoration: none;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: @modal-border;
+  }
+
+  .modal__title {
+    padding-bottom: 3px;
+    color: @modal-main;
+    border-bottom: 1px solid @modal-border;
+    margin-bottom: 3px;
+  }
+
+  .modal__wrapper {
+    width: 400px;
+    background-color: #fff;
+    border-radius: 3px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 20vh;
+    padding: 10px;
+  }
+}

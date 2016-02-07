@@ -43,8 +43,24 @@
 
     &:hover {
       color: #fff;
-      background-color: @block-btn-backgroudColorHover;
-      border-color: @block-btn-backgroudColorHover;
+      background-color: @block-btn-backgroundColorHover;
+      border-color: @block-btn-backgroundColorHover;
+    }
+  }
+
+  .button__inline {
+    color: @block-btn-backgroundColor;
+    text-transform: uppercase;
+    background-color: #fff;
+    border: none;
+
+    &:focus {
+      outline: none;
+      cursor: pointer;
+    }
+
+    &:hover {
+      color: @block-btn-backgroundColorHover;
     }
   }
 }

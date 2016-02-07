@@ -4,6 +4,8 @@ import { bindActionCreators } from 'redux'
 import {connect} from 'react-redux';
 import * as PageActions from '../actions/page';
 
+import Modal from '../components/modal.jsx';
+
 if (process.env.BROWSER) {
     const ace = require('brace');
     require('brace/mode/markdown');
@@ -16,6 +18,20 @@ class PageForm extends React.Component {
 
         this.savePage = this.savePage.bind(this);
         this.onChange = this.onChange.bind(this);
+
+        this.showUrlModal = this.showUrlModal.bind(this);
+        this.closeUrlModal = this.closeUrlModal.bind(this);
+
+        this.showImageModal = this.showImageModal.bind(this);
+        this.closeImageModal = this.closeImageModal.bind(this);
+
+        this.setLink = this.setLink.bind(this);
+        this.setImage = this.setImage.bind(this);
+
+        this.state = {
+            urlModal: false,
+            imageModal: false
+        }
     }
 
     componentDidMount() {
@@ -38,7 +54,7 @@ class PageForm extends React.Component {
     }
 
     componentWillUnmount() {
-        if (process.env.BROWSER) {
+        if (process.env.BROWSER && this.editor) {
             this.editor.destroy();
             this.editor = null;
         }
@@ -103,6 +119,48 @@ class PageForm extends React.Component {
     }
 
 
+    showUrlModal() {
+        this.props.dispatch(PageActions.changeData({text: this.editor.getValue()}));
+        this.setState({urlModal: true});
+        document.body.style.overflow = 'hidden';
+    }
+
+    closeUrlModal() {
+        this.props.dispatch(PageActions.changeData({text: this.editor.getValue()}));
+        this.setState({urlModal: false});
+        document.body.style.overflow = 'auto';
+    }
+
+    showImageModal() {
+        this.props.dispatch(PageActions.changeData({text: this.editor.getValue()}));
+        this.setState({imageModal: true});
+        document.body.style.overflow = 'hidden';
+    }
+
+    closeImageModal() {
+        this.props.dispatch(PageActions.changeData({text: this.editor.getValue()}));
+        this.setState({imageModal: false});
+        document.body.style.overflow = 'auto';
+    }
+
+    setLink() {
+        let link = `[${this.refs.link_text.value}](${this.refs.link_url.value})`;
+        this.editor.insert(`${link}`);
+        this.editor.focus();
+        this.closeUrlModal();
+        this.refs.link_text.value = '';
+        this.refs.link_url.value = '';
+    }
+
+    setImage() {
+        let image = `![${this.refs.image_alt.value}](${this.refs.image_url.value})`;
+        this.editor.insert(`${image}`);
+        this.editor.focus();
+        this.closeImageModal();
+        this.refs.image_alt.value = '';
+        this.refs.image_url.value = '';
+    }
+
     render() {
         let title = this.props.params.id ? 'Update page' : 'Create page';
         let {page} = this.props;
@@ -118,6 +176,10 @@ class PageForm extends React.Component {
                     </div>
                     <div className="block">
                         <label className="label">Text</label>
+                        <div>
+                            <button className="button__inline" onClick={this.showUrlModal}>URL</button>
+                            <button className="button__inline" onClick={this.showImageModal}>Image</button>
+                        </div>
                         <div className="pageForm__editor-wrapper" ref="wrapper">
                             <div className="pageForm__editor" ref="editor"></div>
                         </div>
@@ -128,6 +190,34 @@ class PageForm extends React.Component {
                         </button>
                     </div>
                 </div>
+                <Modal close={this.closeUrlModal} isOpen={this.state.urlModal} title="Insert Link">
+                    <div className="block">
+                        <label className="label">Link text</label>
+                        <input type="text" className="control" ref="link_text"/>
+                    </div>
+                    <div className="block">
+                        <label htmlFor="" className="label">URL</label>
+                        <input type="text" className="control" ref="link_url"/>
+                    </div>
+                    <div className="block">
+                        <button className="button" onClick={this.setLink}>
+                            set link
+                        </button>
+                    </div>
+                </Modal>
+                <Modal close={this.closeImageModal} isOpen={this.state.imageModal} title="Insert Image">
+                    <div className="block">
+                        <label htmlFor="" className="label">Image URL</label>
+                        <input type="text" className="control" ref="image_url"/>
+                    </div>
+                    <div className="block">
+                        <label htmlFor="" className="label">Alt text</label>
+                        <input type="text" className="control" ref="image_alt"/>
+                    </div>
+                    <div className="block">
+                        <button className="button" onClick={this.setImage}>set image</button>
+                    </div>
+                </Modal>
             </div>
         )
     }
