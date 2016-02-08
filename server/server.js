@@ -117,7 +117,9 @@ app.use((req, res) => {
     });
 });
 
-app.listen(3000, 'localhost', error => {
+let port = process.env.PORT || 3000;
+
+app.listen(port, 'localhost', error => {
     if (error) {
         console.log(error);
         return;
