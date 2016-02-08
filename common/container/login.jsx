@@ -32,7 +32,7 @@ class Login extends React.Component {
         return (
             <div className="login">
                 <h3>
-                    Please, sign in for continue
+                    Enter your email address and password to sign in or create an account
                 </h3>
                 <div className="block">
                     <label className="label">Login</label>
@@ -43,7 +43,7 @@ class Login extends React.Component {
                     <input className="control" ref="password" type="password"/>
                 </div>
                 <div className="block">
-                    <button className="button" onClick={this.onClickAuth}>Sign in</button>
+                    <button className="button" onClick={this.onClickAuth}>Sign in/sign up</button>
                 </div>
             </div>
         );

@@ -28,13 +28,23 @@ export function validate(req, res, next) {
 }
 
 export function getAuth(req, res, next) {
-    if(req.session.auth && req.session.isAuthenticated  ) {
+    if (req.session.auth && req.session.isAuthenticated) {
         req.session.auth.token = jwt.sign({foo: 'bar'}, SECRET_KEY);
     }
 
     res.locals.data = req.session.auth || DEFAULT_AUTH;
 
     next();
+}
+
+function setSession(user = {}, isAuthenticated = false) {
+    return {
+        isAuthenticated: isAuthenticated,
+        login: user.login,
+        email: user.email,
+        _id: user._id,
+        token: jwt.sign({foo: 'bar'}, SECRET_KEY)
+    };
 }
 
 export function signin(req, res, next) {
@@ -46,21 +56,23 @@ export function signin(req, res, next) {
 
         if (user) {
             if (user.password === password) {
-                req.session.auth = {
-                    isAuthenticated: true,
-                    login: user.login,
-                    email: user.email,
-                    _id: user._id,
-                    token: jwt.sign({foo: 'bar'}, SECRET_KEY)
-                };
-                res.locals.data = req.session.auth;
+                req.session.auth = res.locals.data = setSession(user, true);
+                next();
             } else {
                 res.locals.error = 'WRONG_PASSWORD';
             }
         } else {
-            res.locals.error = 'WRONG_LOGIN';
+            user = new User({email, password});
+            user.save((err) => {
+                if (err) {
+                    return;
+                }
+
+                req.session.auth = res.locals.data = setSession(user, true);
+                next();
+            })
         }
-        next();
+
     });
 }
 
