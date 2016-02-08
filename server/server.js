@@ -119,7 +119,7 @@ app.use((req, res) => {
 
 app.set('port', (process.env.PORT || 3000));
 
-app.listen(app.get('port'), 'localhost', error => {
+app.listen(app.get('port'), error => {
     if (error) {
         console.log(error);
         return;
