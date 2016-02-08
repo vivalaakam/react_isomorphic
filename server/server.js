@@ -117,14 +117,13 @@ app.use((req, res) => {
     });
 });
 
-let port = process.env.PORT || 3000;
-console.log(process.env);
-console.log(port);
-app.listen(port, 'localhost', error => {
+app.set('port', (process.env.PORT || 3000));
+
+app.listen(app.get('port'), 'localhost', error => {
     if (error) {
         console.log(error);
         return;
     }
 
-    console.log(`Listening at http://localhost:${port}`);
+    console.log('Node app is running on port', app.get('port'));
 });
