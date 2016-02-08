@@ -5,7 +5,7 @@ import * as TodoActions from '../actions/todo';
 import {RECEIVE_TODOS} from '../constants/todo';
 
 import Header from '../components/header.jsx'
-import MainSection from '../components/mainSection.jsx'
+import MainSection from '../components/mainsection.jsx'
 
 if (process.env.BROWSER) {
     require('../styles/todo.less');
