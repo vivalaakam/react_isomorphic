@@ -4,8 +4,10 @@
   height: @top-bar-height;
   background-color: @top-bar-background;
   line-height: @top-bar-height;
-  position: relative;
-
+  position: fixed;
+  padding-left: @left-side-width;
+  transition: @left-side-animation;
+  width: 100%;
   .topBar__title {
     .topBar__title-link {
       color: #fff;

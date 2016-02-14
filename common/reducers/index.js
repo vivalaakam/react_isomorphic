@@ -5,8 +5,10 @@ import pages from './pages';
 import todo from './todo';
 import main from './main';
 import auth from './auth';
+import places from './places';
+
 
 export default combineReducers({
     router: routerStateReducer,
-    todo, page, main, auth, pages
+    todo, page, main, auth, pages, places
 });

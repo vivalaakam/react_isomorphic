@@ -1,0 +1,2 @@
+export const RECEIVE_PLACES = 'RECEIVE_PLACES';
+export const REQUEST_PLACES = 'REQUEST_PLACES';

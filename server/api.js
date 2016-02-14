@@ -3,6 +3,7 @@ import { UNAUTHORIZED } from './constants';
 import page from './modules/page';
 import todo from './modules/todo';
 import auth from './modules/auth';
+import place from './modules/place';
 
 const router = express.Router();
 
@@ -84,6 +85,10 @@ router.put('/todos/:id', ...todo.updateTodo, (req, res) => {
         let {error} = res.locals;
         res.status(404).json({error});
     }
+});
+
+router.get('/places', ...place.getPlaces, (req, res) => {
+    res.json(res.locals.data);
 });
 
 router.post('/signin', ...auth.signin, (req, res) => {
