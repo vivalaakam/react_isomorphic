@@ -48,7 +48,9 @@ export default {
         new ExtractTextPlugin("style.css"),
         new webpack.DefinePlugin({
             "process.env": {
-                BROWSER: JSON.stringify(true)
+                BROWSER: JSON.stringify(true),
+                MESSAGING_ID: process.env.MESSAGING_ID,
+                MESSAGING_API: "'" + process.env.MESSAGING_API + "'"
             }
         })
     ]

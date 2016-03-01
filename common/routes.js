@@ -10,12 +10,14 @@ import PageForm from './container/page_form.jsx';
 import Todo from './container/todo.jsx';
 import Main from './container/main.jsx';
 import Login from './container/login.jsx';
+import PushMessages from './container/push.jsx';
 
 import Restricted from './container/restricted.jsx';
 
 export default (
     <Route path="/" component={App}>
         <IndexRoute component={Main}/>
+        <Route name="push" path="/push" component={PushMessages}/>
         <Route name="pages" path="/pages" component={Pages}/>
         <Route name="login" path="/login" component={Login}/>
         <Route path="/" component={Restricted}>

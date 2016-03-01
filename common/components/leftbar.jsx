@@ -15,6 +15,7 @@ export  default class LeftMenu extends React.Component {
     render() {
         let checkboxClass = classnames('menu__item-element', 'icon-checklist', {'menu__item-active': this.props.isActive('todos')});
         let pagesClass = classnames('menu__item-element', 'icon-page', {'menu__item-active': this.props.isActive('pages')});
+        let pushClass = classnames('menu__item-element', 'icon-push', {'menu__item-active': this.props.isActive('push')});
         return (
             <div className="menu">
                 <ul className="menu__list">
@@ -28,6 +29,11 @@ export  default class LeftMenu extends React.Component {
                     <li className="menu__list-element menu__item">
                         <Link className={pagesClass} to="/pages">
                             <span className="menu__item-textWrapper">Pages</span>
+                        </Link>
+                    </li>
+                    <li className="menu__list-element menu__item">
+                        <Link className={pushClass} to="/push">
+                            <span className="menu__item-textWrapper">Push messages</span>
                         </Link>
                     </li>
                 </ul>
