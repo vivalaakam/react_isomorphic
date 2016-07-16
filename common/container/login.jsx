@@ -45,6 +45,9 @@ class Login extends React.Component {
                 <div className="block">
                     <button className="button" onClick={this.onClickAuth}>Sign in/sign up</button>
                 </div>
+                <div className="block">
+                    <a href="/oauth/vk" className="button">Sign in/sign up via VK</a>
+                </div>
             </div>
         );
     }

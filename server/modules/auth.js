@@ -82,8 +82,62 @@ export function signout(req, res, next) {
     next();
 }
 
+export function oauth(req, res, next) {
+    const {network , data} = res.locals;
+    if (req.session.auth && req.session.isAuthenticated) {
+        User.update({_id: req.session.auth._id}, {
+            $set: {
+                [network]: data,
+                updated_at: new Date()
+            }
+        }, {}, (err, user) => {
+            if (err) {
+                return;
+            }
+            next();
+        });
+    } else {
+
+        let _id = `${network}.id`;
+        let _email = `${network}.email`;
+
+        var query = [
+            {
+                [_id]: data.id
+            },
+            {
+                [_email]: data.email
+            },
+            {
+                email: data.email
+            }
+        ];
+
+        User.findOne({
+            $or: query
+        }, (err, user) => {
+            if (err) {
+                console.log(err);
+            }
+
+            if (!user) {
+                user = new User();
+                user.email = data.email;
+            }
+
+            user[network] = data;
+            user.updated_at = new Date();
+            user.save(() => {
+                req.session.auth = res.locals.data = setSession(user, true);
+                next();
+            })
+        })
+    }
+}
+
 export default {
     signin: [signin],
     signout: [signout],
-    getAuth: [getAuth]
+    getAuth: [getAuth],
+    oauth: [oauth]
 }

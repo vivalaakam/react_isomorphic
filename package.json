@@ -44,6 +44,7 @@
     "redux-thunk": "^1.0.3",
     "remarkable": "^1.6.2",
     "serialize-javascript": "^1.1.2",
+    "simple-oauth2": "^0.7.0",
     "style-loader": "^0.13.0",
     "superagent": "^1.7.2",
     "url-loader": "^0.5.7",

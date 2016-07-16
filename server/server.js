@@ -23,6 +23,7 @@ import {MOUNT_ID} from '../common/constants';
 import reducer from '../common/reducers';
 import routes from '../common/routes';
 
+import vk from './oauth/vk';
 
 import api from './api';
 import local from './local';
@@ -82,6 +83,8 @@ app.use(webpackDevMiddleware(compiler, {
 }));
 
 app.use(webpackHotMiddleware(compiler));
+
+app.use('/oauth/vk', vk)
 
 app.use('/api', api);
 
